@@ -1,0 +1,3 @@
+---
+# Tenant network services are defined per-campus in CAMPUS1.yml, CAMPUS2.yml, CAMPUS3.yml
+# to allow campus-specific SVI subnets.

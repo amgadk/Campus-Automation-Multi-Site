@@ -1,0 +1,48 @@
+---
+- name: Deploy WAN & Host configurations
+  hosts: "{{ target_hosts }}"
+  gather_facts: false
+
+  tasks:
+
+    - name: Import Global Vars
+      ansible.builtin.include_vars: "{{ item }}"
+      with_items:
+        - "../group_vars/global.yml"
+
+    - name: load configuration from file
+      arista.eos.eos_config:
+        src: ../host_configs/{{inventory_hostname}}.cfg
+        replace: line
+
+# CloudVision onboarding + tags for lab host/endpoint devices.
+# These devices are not part of the AVD fabric inventory/eos_designs pipeline,
+# so they never receive metadata.cv_tags. On the installed AVD version (6.0.0),
+# cv_deploy's cv_workflow module has no "read tags from Ansible vars" mode at
+# all (that only exists in newer/unreleased AVD) - it always reads structured
+# config, including CloudVision tags, from a real file at
+# {{ structured_dir }}/<hostname>.yml (metadata.cv_tags.device_tags key).
+# eos_config_dir and structured_dir are both pointed at host_configs/ (instead
+# of the default intended/configs and intended/structured_configs, which are
+# never generated for these devices) so cv_deploy finds:
+#   - host_configs/<hostname>.cfg for the flat-layout configlet (already
+#     applied to the device above via eos_config)
+#   - host_configs/<hostname>.yml for the CloudVision device tags
+- name: Tag host/endpoint devices on CloudVision
+  hosts: "{{ target_hosts }}"
+  connection: local
+  gather_facts: false
+
+  vars:
+    eos_config_dir: "{{ inventory_dir }}"
+    structured_dir: "{{ inventory_dir }}"
+
+  tasks:
+    - name: Deploy CloudVision tags for lab host/endpoint devices
+      ansible.builtin.import_role:
+        name: arista.avd.cv_deploy
+      vars:
+        cv_server: 192.168.0.5
+        cv_token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJkaWQiOjc2NDUyMjk0ODU1NDA3NzAwOTIsImRzbiI6ImF2ZCIsImRzdCI6ImFjY291bnQiLCJleHAiOjE3ODA1ODE2MDAsImlhdCI6MTc4MDA2MzEzNiwib2dpIjozLCJvZ24iOiJEZWZhdWx0Iiwic2lkIjoiMzEyMGM4MDZmMjI3YTM0MGRhZmEyOWJjMTJiYjFkYWRjMWYzYmE3NWVlZGE3NjQwZjNhYjZlYjhjMWE0NDNiOC10RTdiR284VDRJNmE0WDBZNTRQRUxNRk5fYXlHM2ZVdzRRTWgtTlc4In0.qS22XsNzhHBC2dI44qmwjwGGo0-iZv16R1aPw3CSWgtFJiIj4EH1-yXzK7Lfqw6IPfs0yHa6A_d9RmzTQbtXrFpbfOQHFHEc-mOm0MhzXM1DtXJlGXl0HN5gxKE1WKKx1r7DtQqFcIwU3JKJKrPgQ0DCVv7U6XtWfrZt7PwFwuboGXcTGwGdfXESAZuV8ThMHwb9E6VOSV3J_2ZUNK_sC-mpaqDACsG-f98gPa11QIRpnSQGrhjFhdwytLmuJnlh9JYTtBy5WQPSMiNY5S3QZLzJgPvrhdsIgezXu-Y2kj3976EE1GLWt_KnBjG5saDsOu1eREQ_JqeDhwBM3ZkfJ_iG3QGWr67_OnX92Hi4CuMmYty_eiQ_4BYcTID0RJiXkTsxLNgKSeI7CQpjWQRZXp2SKhnLEWUxoMmD4zZMhbOSf8GbkRzRyBBaagtgPnae43oiNi59VWE1SWGQk0jrvf-Tbc7YRLhD0YEklnE8uW_UuIpabrlD-Re1lbH9KUM5zGB6enSvvhe4xux-P8seeQx5J3IBD05f0geDzofdcKeiu25ZHVmaTVwwo8J7M0G01-SlD1QbnDLFPtH1YO_cfK4kPUcqw06POEVIekQRVWfZomlLP8rlP2xDcDx3NvK7igVVP0VTYxM8eEQtRSvh3GukmLEnaW9vSSbfxHGU7vw
+        cv_verify_certs: false
+        cv_register_detailed_results: true
