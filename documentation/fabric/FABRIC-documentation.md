@@ -37,6 +37,16 @@
 | FABRIC | l3leaf | c2-leaf6 | 192.168.0.206/24 | vEOS-lab | Provisioned | - |
 | FABRIC | spine | c2-spine1 | 192.168.0.113/24 | vEOS-lab | Provisioned | - |
 | FABRIC | spine | c2-spine2 | 192.168.0.114/24 | vEOS-lab | Provisioned | - |
+| FABRIC | l3leaf | c3-borderleaf1 | 192.168.0.137/24 | vEOS-lab | Provisioned | - |
+| FABRIC | l3leaf | c3-borderleaf2 | 192.168.0.138/24 | vEOS-lab | Provisioned | - |
+| FABRIC | l3leaf | c3-leaf1 | 192.168.0.131/24 | vEOS-lab | Provisioned | - |
+| FABRIC | l3leaf | c3-leaf2 | 192.168.0.132/24 | vEOS-lab | Provisioned | - |
+| FABRIC | l3leaf | c3-leaf3 | 192.168.0.133/24 | vEOS-lab | Provisioned | - |
+| FABRIC | l3leaf | c3-leaf4 | 192.168.0.134/24 | vEOS-lab | Provisioned | - |
+| FABRIC | l3leaf | c3-leaf5 | 192.168.0.135/24 | vEOS-lab | Provisioned | - |
+| FABRIC | l3leaf | c3-leaf6 | 192.168.0.136/24 | vEOS-lab | Provisioned | - |
+| FABRIC | spine | c3-spine1 | 192.168.0.115/24 | vEOS-lab | Provisioned | - |
+| FABRIC | spine | c3-spine2 | 192.168.0.116/24 | vEOS-lab | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
@@ -97,6 +107,30 @@
 | l3leaf | c2-leaf5 | Ethernet6 | mlag_peer | c2-leaf6 | Ethernet6 |
 | l3leaf | c2-leaf6 | Ethernet1 | spine | c2-spine1 | Ethernet6 |
 | l3leaf | c2-leaf6 | Ethernet2 | spine | c2-spine2 | Ethernet6 |
+| l3leaf | c3-borderleaf1 | Ethernet1 | spine | c3-spine1 | Ethernet7 |
+| l3leaf | c3-borderleaf1 | Ethernet2 | spine | c3-spine2 | Ethernet7 |
+| l3leaf | c3-borderleaf1 | Ethernet5 | mlag_peer | c3-borderleaf2 | Ethernet5 |
+| l3leaf | c3-borderleaf1 | Ethernet6 | mlag_peer | c3-borderleaf2 | Ethernet6 |
+| l3leaf | c3-borderleaf2 | Ethernet1 | spine | c3-spine1 | Ethernet8 |
+| l3leaf | c3-borderleaf2 | Ethernet2 | spine | c3-spine2 | Ethernet8 |
+| l3leaf | c3-leaf1 | Ethernet1 | spine | c3-spine1 | Ethernet1 |
+| l3leaf | c3-leaf1 | Ethernet2 | spine | c3-spine2 | Ethernet1 |
+| l3leaf | c3-leaf1 | Ethernet5 | mlag_peer | c3-leaf2 | Ethernet5 |
+| l3leaf | c3-leaf1 | Ethernet6 | mlag_peer | c3-leaf2 | Ethernet6 |
+| l3leaf | c3-leaf2 | Ethernet1 | spine | c3-spine1 | Ethernet2 |
+| l3leaf | c3-leaf2 | Ethernet2 | spine | c3-spine2 | Ethernet2 |
+| l3leaf | c3-leaf3 | Ethernet1 | spine | c3-spine1 | Ethernet3 |
+| l3leaf | c3-leaf3 | Ethernet2 | spine | c3-spine2 | Ethernet3 |
+| l3leaf | c3-leaf3 | Ethernet5 | mlag_peer | c3-leaf4 | Ethernet5 |
+| l3leaf | c3-leaf3 | Ethernet6 | mlag_peer | c3-leaf4 | Ethernet6 |
+| l3leaf | c3-leaf4 | Ethernet1 | spine | c3-spine1 | Ethernet4 |
+| l3leaf | c3-leaf4 | Ethernet2 | spine | c3-spine2 | Ethernet4 |
+| l3leaf | c3-leaf5 | Ethernet1 | spine | c3-spine1 | Ethernet5 |
+| l3leaf | c3-leaf5 | Ethernet2 | spine | c3-spine2 | Ethernet5 |
+| l3leaf | c3-leaf5 | Ethernet5 | mlag_peer | c3-leaf6 | Ethernet5 |
+| l3leaf | c3-leaf5 | Ethernet6 | mlag_peer | c3-leaf6 | Ethernet6 |
+| l3leaf | c3-leaf6 | Ethernet1 | spine | c3-spine1 | Ethernet6 |
+| l3leaf | c3-leaf6 | Ethernet2 | spine | c3-spine2 | Ethernet6 |
 
 ## Fabric IP Allocation
 
@@ -106,6 +140,7 @@
 | ---------------- | ------------------- | ------------------ | ------------------ |
 | 10.10.200.0/22 | 1024 | 32 | 3.13 % |
 | 10.20.200.0/22 | 1024 | 32 | 3.13 % |
+| 10.30.200.0/22 | 1024 | 32 | 3.13 % |
 
 ### Point-To-Point Links Node Allocation
 
@@ -143,6 +178,22 @@
 | c2-leaf5 | Ethernet2 | 10.20.201.247/31 | c2-spine2 | Ethernet5 | 10.20.201.246/31 |
 | c2-leaf6 | Ethernet1 | 10.20.201.249/31 | c2-spine1 | Ethernet6 | 10.20.201.248/31 |
 | c2-leaf6 | Ethernet2 | 10.20.201.251/31 | c2-spine2 | Ethernet6 | 10.20.201.250/31 |
+| c3-borderleaf1 | Ethernet1 | 10.30.202.37/31 | c3-spine1 | Ethernet7 | 10.30.202.36/31 |
+| c3-borderleaf1 | Ethernet2 | 10.30.202.39/31 | c3-spine2 | Ethernet7 | 10.30.202.38/31 |
+| c3-borderleaf2 | Ethernet1 | 10.30.202.41/31 | c3-spine1 | Ethernet8 | 10.30.202.40/31 |
+| c3-borderleaf2 | Ethernet2 | 10.30.202.43/31 | c3-spine2 | Ethernet8 | 10.30.202.42/31 |
+| c3-leaf1 | Ethernet1 | 10.30.202.13/31 | c3-spine1 | Ethernet1 | 10.30.202.12/31 |
+| c3-leaf1 | Ethernet2 | 10.30.202.15/31 | c3-spine2 | Ethernet1 | 10.30.202.14/31 |
+| c3-leaf2 | Ethernet1 | 10.30.202.17/31 | c3-spine1 | Ethernet2 | 10.30.202.16/31 |
+| c3-leaf2 | Ethernet2 | 10.30.202.19/31 | c3-spine2 | Ethernet2 | 10.30.202.18/31 |
+| c3-leaf3 | Ethernet1 | 10.30.202.21/31 | c3-spine1 | Ethernet3 | 10.30.202.20/31 |
+| c3-leaf3 | Ethernet2 | 10.30.202.23/31 | c3-spine2 | Ethernet3 | 10.30.202.22/31 |
+| c3-leaf4 | Ethernet1 | 10.30.202.25/31 | c3-spine1 | Ethernet4 | 10.30.202.24/31 |
+| c3-leaf4 | Ethernet2 | 10.30.202.27/31 | c3-spine2 | Ethernet4 | 10.30.202.26/31 |
+| c3-leaf5 | Ethernet1 | 10.30.202.29/31 | c3-spine1 | Ethernet5 | 10.30.202.28/31 |
+| c3-leaf5 | Ethernet2 | 10.30.202.31/31 | c3-spine2 | Ethernet5 | 10.30.202.30/31 |
+| c3-leaf6 | Ethernet1 | 10.30.202.33/31 | c3-spine1 | Ethernet6 | 10.30.202.32/31 |
+| c3-leaf6 | Ethernet2 | 10.30.202.35/31 | c3-spine2 | Ethernet6 | 10.30.202.34/31 |
 
 ### Loopback Interfaces (BGP EVPN Peering)
 
@@ -150,6 +201,7 @@
 | ------------- | ------------------- | ------------------ | ------------------ |
 | 10.255.10.0/24 | 256 | 10 | 3.91 % |
 | 10.255.20.0/24 | 256 | 10 | 3.91 % |
+| 10.255.30.0/24 | 256 | 10 | 3.91 % |
 
 ### Loopback0 Interfaces Node Allocation
 
@@ -175,12 +227,22 @@
 | FABRIC | c2-leaf6 | 10.255.20.127/32 |
 | FABRIC | c2-spine1 | 10.255.20.120/32 |
 | FABRIC | c2-spine2 | 10.255.20.121/32 |
+| FABRIC | c3-borderleaf1 | 10.255.30.138/32 |
+| FABRIC | c3-borderleaf2 | 10.255.30.139/32 |
+| FABRIC | c3-leaf1 | 10.255.30.132/32 |
+| FABRIC | c3-leaf2 | 10.255.30.133/32 |
+| FABRIC | c3-leaf3 | 10.255.30.134/32 |
+| FABRIC | c3-leaf4 | 10.255.30.135/32 |
+| FABRIC | c3-leaf5 | 10.255.30.136/32 |
+| FABRIC | c3-leaf6 | 10.255.30.137/32 |
+| FABRIC | c3-spine1 | 10.255.30.130/32 |
+| FABRIC | c3-spine2 | 10.255.30.131/32 |
 
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------------ | ------------------- | ------------------ | ------------------ |
-| 10.255.1.0/24 | 256 | 8 | 3.13 % |
+| 10.255.1.0/24 | 256 | 16 | 6.25 % |
 | 10.255.2.0/24 | 256 | 8 | 3.13 % |
 
 ### VTEP Loopback Node allocation
@@ -203,3 +265,11 @@
 | FABRIC | c2-leaf4 | 10.255.2.124/32 |
 | FABRIC | c2-leaf5 | 10.255.2.126/32 |
 | FABRIC | c2-leaf6 | 10.255.2.126/32 |
+| FABRIC | c3-borderleaf1 | 10.255.1.138/32 |
+| FABRIC | c3-borderleaf2 | 10.255.1.138/32 |
+| FABRIC | c3-leaf1 | 10.255.1.132/32 |
+| FABRIC | c3-leaf2 | 10.255.1.132/32 |
+| FABRIC | c3-leaf3 | 10.255.1.134/32 |
+| FABRIC | c3-leaf4 | 10.255.1.134/32 |
+| FABRIC | c3-leaf5 | 10.255.1.136/32 |
+| FABRIC | c3-leaf6 | 10.255.1.136/32 |
