@@ -1,0 +1,360 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_c1-leaf1_Ethernet1
+  shutdown: false
+  mtu: 1550
+  ip_address: 10.10.201.152/31
+  metadata:
+    peer: c1-leaf1
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet2
+  description: P2P_c1-leaf2_Ethernet1
+  shutdown: false
+  mtu: 1550
+  ip_address: 10.10.201.156/31
+  metadata:
+    peer: c1-leaf2
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet3
+  description: P2P_c1-leaf3_Ethernet1
+  shutdown: false
+  mtu: 1550
+  ip_address: 10.10.201.160/31
+  metadata:
+    peer: c1-leaf3
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet4
+  description: P2P_c1-leaf4_Ethernet1
+  shutdown: false
+  mtu: 1550
+  ip_address: 10.10.201.164/31
+  metadata:
+    peer: c1-leaf4
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet5
+  description: P2P_c1-leaf5_Ethernet1
+  shutdown: false
+  mtu: 1550
+  ip_address: 10.10.201.168/31
+  metadata:
+    peer: c1-leaf5
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet6
+  description: P2P_c1-leaf6_Ethernet1
+  shutdown: false
+  mtu: 1550
+  ip_address: 10.10.201.172/31
+  metadata:
+    peer: c1-leaf6
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet7
+  description: P2P_c1-borderleaf1_Ethernet1
+  shutdown: false
+  mtu: 1550
+  ip_address: 10.10.201.176/31
+  metadata:
+    peer: c1-borderleaf1
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet8
+  description: P2P_c1-borderleaf2_Ethernet1
+  shutdown: false
+  mtu: 1550
+  ip_address: 10.10.201.180/31
+  metadata:
+    peer: c1-borderleaf2
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+hostname: c1-spine1
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.255.10.100/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: default
+  ip_address: 192.168.0.111/24
+  type: oob
+metadata:
+  is_deployed: true
+  platform: vEOS-lab
+  fabric_name: FABRIC
+  validate_hardware:
+    enabled: false
+  cv_tags:
+    device_tags:
+    - name: topology_hint_network_type
+      value: campusV2
+    - name: topology_hint_type
+      value: Spine
+    - name: Role
+      value: Spine
+    - name: Campus
+      value: ACME-AU
+    - name: Campus-Pod
+      value: CAMPUS1
+    interface_tags:
+    - interface: Ethernet1
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: Downlink
+    - interface: Ethernet2
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: Downlink
+    - interface: Ethernet3
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: Downlink
+    - interface: Ethernet4
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: Downlink
+    - interface: Ethernet5
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: Downlink
+    - interface: Ethernet6
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: Downlink
+    - interface: Ethernet7
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: Downlink
+    - interface: Ethernet8
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: Downlink
+    - interface: Management1
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Management
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.10.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65000'
+  router_id: 10.255.10.100
+  maximum_paths:
+    paths: 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    metadata:
+      type: ipv4
+    send_community: all
+    maximum_routes: 256000
+  - name: EVPN-OVERLAY-PEERS
+    metadata:
+      type: evpn
+    next_hop_unchanged: true
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    send_community: all
+    maximum_routes: 0
+  neighbors:
+  - ip_address: 10.10.201.153
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65202'
+    metadata:
+      peer: c1-leaf1
+    description: c1-leaf1_Ethernet1
+  - ip_address: 10.10.201.157
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65202'
+    metadata:
+      peer: c1-leaf2
+    description: c1-leaf2_Ethernet1
+  - ip_address: 10.10.201.161
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65204'
+    metadata:
+      peer: c1-leaf3
+    description: c1-leaf3_Ethernet1
+  - ip_address: 10.10.201.165
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65204'
+    metadata:
+      peer: c1-leaf4
+    description: c1-leaf4_Ethernet1
+  - ip_address: 10.10.201.169
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65206'
+    metadata:
+      peer: c1-leaf5
+    description: c1-leaf5_Ethernet1
+  - ip_address: 10.10.201.173
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65206'
+    metadata:
+      peer: c1-leaf6
+    description: c1-leaf6_Ethernet1
+  - ip_address: 10.10.201.177
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65300'
+    metadata:
+      peer: c1-borderleaf1
+    description: c1-borderleaf1_Ethernet1
+  - ip_address: 10.10.201.181
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65300'
+    metadata:
+      peer: c1-borderleaf2
+    description: c1-borderleaf2_Ethernet1
+  - ip_address: 10.255.10.109
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65300'
+    metadata:
+      peer: c1-borderleaf1
+    description: c1-borderleaf1_Loopback0
+  - ip_address: 10.255.10.110
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65300'
+    metadata:
+      peer: c1-borderleaf2
+    description: c1-borderleaf2_Loopback0
+  - ip_address: 10.255.10.103
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65202'
+    metadata:
+      peer: c1-leaf1
+    description: c1-leaf1_Loopback0
+  - ip_address: 10.255.10.104
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65202'
+    metadata:
+      peer: c1-leaf2
+    description: c1-leaf2_Loopback0
+  - ip_address: 10.255.10.105
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65204'
+    metadata:
+      peer: c1-leaf3
+    description: c1-leaf3_Loopback0
+  - ip_address: 10.255.10.106
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65204'
+    metadata:
+      peer: c1-leaf4
+    description: c1-leaf4_Loopback0
+  - ip_address: 10.255.10.107
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65206'
+    metadata:
+      peer: c1-leaf5
+    description: c1-leaf5_Loopback0
+  - ip_address: 10.255.10.108
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65206'
+    metadata:
+      peer: c1-leaf6
+    description: c1-leaf6_Loopback0
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: default
+  ip_routing: false
