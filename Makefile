@@ -3,8 +3,9 @@ help: ## Display help message
 	@grep -E '^[0-9a-zA-Z_-]+\.*[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 ########################################################
-# Campus Automation Multi-Site
+# Campus 1
 ########################################################
+
 
 
 .PHONY: build
@@ -47,10 +48,15 @@ endif
 $(CAMPUSES) all:
 	@:
 
+# ANTA's table view sizes its Message(s)/Description columns to the detected
+# terminal width, which falls back to a cramped 80 columns whenever stdout
+# isn't a real tty (eg. running under make, piped, or redirected to a file) -
+# squeezing failure reasons into unreadable wrapped fragments. Forcing a wide
+# COLUMNS below keeps the full failure reason intact and readable.
 .PHONY: test
 test: ## Run ANTA NRFU tests (Terminal Grid Table view). Add campus1|campus2|campus3|all to scope the run
 	@echo "Running parallel traffic verification matrix..."
-	PYTHONPATH=$(PWD) anta nrfu --inventory $(ANTA_INVENTORY) --catalog $(ANTA_CATALOG) --username $(ANTA_USER) --password $(ANTA_PASSWORD) --insecure $(ANTA_TAGS) table
+	COLUMNS=250 PYTHONPATH=$(PWD) anta nrfu --inventory $(ANTA_INVENTORY) --catalog $(ANTA_CATALOG) --username $(ANTA_USER) --password $(ANTA_PASSWORD) --insecure $(ANTA_TAGS) table
 
 
 .PHONY: text
